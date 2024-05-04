@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">Employees</div>
+        <div style="padding: 1rem"> 
+            <div class="right mb-2">
+                <a href="{% url 'employees:create' %}" role="button" class="btn btn-sm btn-primary">Add</a>
+            </div>
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th width="10%" scope="col">No</th>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Sex</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Resign</th>
+                        <th width="5%" scope="col"></th>
+                        <th width="5%" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>            
+                {% for employee in employees %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{% if employee.avatar_image %}<img style="max-width: 30px;" src="{{ employee.avatar_image.url }}">{% endif %}</td>
+                        <td>{{ employee.name }}</td>
+                        <td>{{ employee.get_sex_display }}</td>
+                        <td>{{ employee.positions }}</td>
+                        <td>{{ employee.salary|intcomma }}</td>
+                        <td>{{ employee.is_resign }}</td>
+                        <td><a href="{% url 'employees:edit' id=employee.id %}" role="button" class="btn btn-warning btn-sm">Edit</a></td>
+                        <td>
+                            <form action="{% url 'employees:delete' id=employee.id %}" method="POST" onsubmit="return confirm('Confirm to delete data?')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

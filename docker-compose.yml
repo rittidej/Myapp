@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: database
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+  
+  adminer:
+    build:
+      context: adminer
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    volumes:
+      - ./web/:/code/
+      - static_volume:/code/staticfiles/
+      - media_volume:/code/media/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports: 
+      - "80:80"
+    volumes:
+      - static_volume:/code/staticfiles/
+      - media_volume:/media/
+    depends_on:
+      - web
+
+volumes:
+  db_data:
+  static_volume:
+  media_volume:

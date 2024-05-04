@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">Add Position</div>
+        <div style="padding: 1rem"> 
+            <div class="right mb-2">
+                <a href="{% url 'positions:index' %}" role="button" class="btn btn-sm btn-light">Back</a>
+            </div>
+            <form action="{% url 'positions:store' %}" method="POST">
+                {% include 'positions/form.html' %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

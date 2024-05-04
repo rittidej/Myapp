@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">Positions</div>
+        <div style="padding: 1rem"> 
+            <div class="right mb-2">
+                <a href="{% url 'positions:create' %}" role="button" class="btn btn-sm btn-primary">Add</a>
+            </div>
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+                        <th width="10%" scope="col">No</th>
+                        <th scope="col">Position</th>
+                        <th width="5%" scope="col"></th>
+                        <th width="5%" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>            
+                {% for position in positions %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ position.name }}</td>
+                        <td><a href="{% url 'positions:edit' id=position.id %}" role="button" class="btn btn-warning btn-sm">Edit</a></td>
+                        <td>
+                            <form action="{% url 'positions:delete' id=position.id %}" method="POST" onsubmit="return confirm('Confirm to delete data?')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

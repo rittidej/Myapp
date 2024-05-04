@@ -1,0 +1,7 @@
+Django>=4,<5
+mysqlclient
+Pillow
+gunicorn
+boto3
+django-storages
+python-decouple
